@@ -1,3 +1,52 @@
+# Modifications
+Dockerfile: `For TensorRT 7.1.2` which includes
+```
+Ubuntu 18.04
+Note: Container image 20.06-py3 contains Python 3.6.
+
+NVIDIA CUDA 11.0.167 including cuBLAS 11.1.0.
+
+NVIDIA cuDNN 8.0.1
+
+NVIDIA NCCL 2.7.5 (optimized for NVLink™ )
+Note: Although NCCL is packaged in the container, it does not affect TensorRT nor inferencing in any way.
+MLNX_OFED
+
+OpenMPI 3.1.6
+
+Nsight Compute 2020.1.0.33
+
+Nsight Systems 2020.2.5.8
+```
+
+for details check https://docs.nvidia.com/deeplearning/tensorrt/container-release-notes/rel_20-06.html#rel_20-06
+
+NvOnnxParser.h: to resolve the following issue..
+
+> NvOnnxParser.h:219: Error: Syntax error in input(1).error: command 'swig' failed with exit status 1
+
+To build and run:
+```
+git clone --recurse-submodules https://github.com/onnx/onnx-tensorrt.git
+cd onnx-tensorrt
+docker build -t onnx-tensorrt:7.1.2 .
+docker run --gpus all -it --rm -v /home/zulfi/workspace:/workspace onnx-tensorrt:7.1.2
+```
+
+further issues : (docker related)
+
+`docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]].`
+```
+# Add the package repositories
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+
+#for ubuntu 18.04
+curl -s -L https://nvidia.github.io/nvidia-docker/ubuntu18.04/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
+# Install ard restart docker.
+sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+sudo systemctl restart docker
+```
 # TensorRT backend for ONNX
 
 Parses ONNX models for execution with [TensorRT](https://developer.nvidia.com/tensorrt).

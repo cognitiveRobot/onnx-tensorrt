@@ -37,6 +37,10 @@
 #define NV_ONNX_PARSER_MINOR 1
 #define NV_ONNX_PARSER_PATCH 0
 
+// to resolve 
+// `NvOnnxParser.h:219: Error: Syntax error in input(1).error: command 'swig' failed with exit status 1`
+#define TENSORRTAPI
+
 static const int NV_ONNX_PARSER_VERSION = ((NV_ONNX_PARSER_MAJOR * 10000) + (NV_ONNX_PARSER_MINOR * 100) + NV_ONNX_PARSER_PATCH);
 
 //! \typedef SubGraph_t
